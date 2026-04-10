@@ -133,13 +133,32 @@ namespace Quiz
                     }
                 }
 
+                Console.WriteLine("\n** CART **");
+
+                for (int i = 0; i < cartProductIds.Length; i++)
+                {
+                    if (cartProductIds[i] == 0)
+                    {
+                        break;
+                    }
+
+                    for (int j = 0; j < products.Length; j++)
+                    {
+                        if (products[i].id == cartProductIds[i])
+                        {
+                            Console.WriteLine($"{products[j].name} x{cartQuantities[i]}");
+                            break;
+                        }
+                    }
+                }
+
                 Console.Write("\nAdd more items? (Y/N): ");
-                choice = Console.ReadLine().ToUpper();
+                choice = Console.ReadLine().ToUpper().Trim();
 
                 while (choice != "Y" && choice != "N")
                 {
                     Console.Write("Type only 'Y' (yes) or 'N' (no): ");
-                    choice = Console.ReadLine().ToUpper();
+                    choice = Console.ReadLine().ToUpper().Trim();
                 }
 
             } while (choice != "N");
