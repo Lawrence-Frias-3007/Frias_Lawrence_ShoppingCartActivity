@@ -144,6 +144,50 @@ namespace Quiz
 
             } while (choice != "N");
 
+            Console.WriteLine("\n** RECEIPT **");
+
+            double grandTotal = 0;
+            double itemTotal;
+
+            for (int i = 0; i < cartProductIds.Length; i++)
+            {
+                for (int j = 0; j < products.Length; j++)
+                {
+                    if (products[j].id == cartProductIds[i])
+                    {
+                        itemTotal = products[j].GetItemTotal(cartQuantities[i]);
+
+                        Console.WriteLine($"{products[j].name} : {products[j].price} x {cartQuantities[i]} = {itemTotal:F2}");
+
+                        grandTotal += itemTotal;
+                        break;
+                    }
+                }
+            }
+
+            Console.WriteLine($"\nGrand Total = Php.{grandTotal:F2}");
+
+            double discount = 0;
+            double discounted = 0;
+            double finalTotal;
+
+            if (grandTotal >= 5000)
+            {
+                discount = 10;
+                discounted = grandTotal * (discount / 100);
+            }
+
+            Console.WriteLine($"\nDiscount ({discount}%) = Php.{discounted:F2}");
+            finalTotal = grandTotal - discounted;
+
+            Console.WriteLine($"\nFinal Total = Php.{finalTotal:F2}");
+
+            Console.WriteLine("\n** UPDATED STOCK **");
+
+            for (int i = 0; i < products.Length; i++)
+            {
+                Console.WriteLine($"{products[i].name} - {products[i].remainingStock}");
+            }
 
         }
     }
