@@ -18,9 +18,12 @@ namespace Quiz
                 new Product {id = 107, name = "Sardines", price = 40, remainingStock = 250},
                 new Product {id = 108, name = "Carrots", price = 80, remainingStock = 100},
                 new Product {id = 109, name = "Garlic", price = 100, remainingStock = 100},
-                new Product {id = 110, name = "Onions", price = 80, remainingStock = 100}
+                new Product {id = 110, name = "Onions", price = 80, remainingStock = 100},
+                new Product {id = 111, name = "Potato", price = 85, remainingStock = 100},
+                new Product {id = 112, name = "Tomato", price = 70, remainingStock = 100}
             };
 
+            Console.WriteLine("PRODUCT ID     PRODUCT NAME     PRICE (Php)     REMAINING STOCK");
             for (int i = 0; i < products.Length; i++)
             {
                 products[i].DisplayProduct();
@@ -30,13 +33,42 @@ namespace Quiz
             int quantity;
             string choice = "Y";
 
+            int[] cartProductIds = new int[10];
+            int[] cartQuantities = new int[10];
+
             do
             {
+                bool exists = false;
+                
                 Console.Write("\nEnter product number: ");
 
                 if (!int.TryParse(Console.ReadLine(), out productNumber))
                 {
-                    Console.WriteLine("\nInvalid product number");
+                    Console.WriteLine("\n-- Invalid product number --");
+                    continue;
+                }
+
+                int productIndex = 0;
+
+                for (int i = 0; i < products.Length; i++)
+                {
+                    if (products[i].id == productNumber)
+                    {
+                        exists = true;
+                        productIndex = i;
+                        break;
+                    }
+                }
+
+                if (!exists)
+                {
+                    Console.WriteLine("\n-- Product not found --");
+                    continue;
+                }
+
+                if (products[productIndex].remainingStock == 0)
+                {
+                    Console.WriteLine("\n-- Product is out of stock --");
                     continue;
                 }
 
@@ -46,6 +78,59 @@ namespace Quiz
                 {
                     Console.WriteLine("\nInvalid quantity");
                     continue;
+                }
+
+                if (quantity <= 0)
+                {
+                    Console.WriteLine("\n-- Invalid quantity --");
+                    continue;
+                }
+
+                if (quantity > products[productIndex].remainingStock)
+                {
+                    Console.WriteLine("\n-- Not enough stock available --");
+                    continue;
+                }
+
+                bool foundInCart = false;
+
+                for (int i = 0; i < cartProductIds.Length; i++)
+                {
+                    if (cartProductIds[i] == productNumber)
+                    {
+                        cartQuantities[i] += quantity;
+                        foundInCart = true;
+
+                        products[productIndex].remainingStock -= quantity;
+                        
+                        Console.WriteLine("\n-- Item added --");
+                        break;
+                    }
+                }
+
+                if (!foundInCart)
+                {
+                    bool added = false;
+
+                    for (int i = 0; i < cartProductIds.Length; i++)
+                    {
+                        if (cartProductIds[i] == 0)
+                        {
+                            cartProductIds[i] = productNumber;
+                            cartQuantities[i] = quantity;
+                            added = true;
+
+                            products[productIndex].remainingStock -= quantity;
+
+                            Console.WriteLine("\n-- Item added to cart --");
+                            break;
+                        }
+                    }
+
+                    if (!added)
+                    {
+                        Console.WriteLine("\n-- Cart is full --");
+                    }
                 }
 
                 Console.Write("\nAdd more items? (Y/N): ");
@@ -72,7 +157,7 @@ namespace Quiz
 
         public void DisplayProduct()
         {
-            Console.WriteLine($"{id} : {name} = {price:F2} - {remainingStock}");
+            Console.WriteLine($"{id, 5}   :        {name, -10}       {price, -15:F2}    {remainingStock}");
         }
 
         public double GetItemTotal(int quantity)
