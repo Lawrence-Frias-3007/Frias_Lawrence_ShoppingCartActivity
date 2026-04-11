@@ -76,7 +76,7 @@ namespace Quiz
 
                 if (!int.TryParse(Console.ReadLine(),out quantity))
                 {
-                    Console.WriteLine("\nInvalid quantity");
+                    Console.WriteLine("\n-- Invalid quantity --");
                     continue;
                 }
 
@@ -144,7 +144,7 @@ namespace Quiz
 
                     for (int j = 0; j < products.Length; j++)
                     {
-                        if (products[i].id == cartProductIds[i])
+                        if (products[j].id == cartProductIds[i])
                         {
                             Console.WriteLine($"{products[j].name} x{cartQuantities[i]}");
                             break;
@@ -170,13 +170,19 @@ namespace Quiz
 
             for (int i = 0; i < cartProductIds.Length; i++)
             {
+                if (cartProductIds[i] == 0)
+                {
+                    break;
+                }
+                
                 for (int j = 0; j < products.Length; j++)
                 {
+                    
                     if (products[j].id == cartProductIds[i])
                     {
                         itemTotal = products[j].GetItemTotal(cartQuantities[i]);
 
-                        Console.WriteLine($"{products[j].name} : {products[j].price} x {cartQuantities[i]} = {itemTotal:F2}");
+                        Console.WriteLine($"{products[j].name} : {products[j].price} x {cartQuantities[i]} = {itemTotal:N2}");
 
                         grandTotal += itemTotal;
                         break;
@@ -184,7 +190,7 @@ namespace Quiz
                 }
             }
 
-            Console.WriteLine($"\nGrand Total = Php.{grandTotal:F2}");
+            Console.WriteLine($"\nGrand Total = Php.{grandTotal:N2}");
 
             double discount = 0;
             double discounted = 0;
@@ -196,10 +202,10 @@ namespace Quiz
                 discounted = grandTotal * (discount / 100);
             }
 
-            Console.WriteLine($"\nDiscount ({discount}%) = Php.{discounted:F2}");
+            Console.WriteLine($"\nDiscount ({discount}%) = Php.{discounted:N2}");
             finalTotal = grandTotal - discounted;
 
-            Console.WriteLine($"\nFinal Total = Php.{finalTotal:F2}");
+            Console.WriteLine($"\nFinal Total = Php.{finalTotal:N2}");
 
             Console.WriteLine("\n** UPDATED STOCK **");
 
@@ -220,7 +226,7 @@ namespace Quiz
 
         public void DisplayProduct()
         {
-            Console.WriteLine($"{id, 5}   :        {name, -10}       {price, -15:F2}    {remainingStock}");
+            Console.WriteLine($"{id, 5}   :        {name, -10}       {price, -15:N2}    {remainingStock}");
         }
 
         public double GetItemTotal(int quantity)
