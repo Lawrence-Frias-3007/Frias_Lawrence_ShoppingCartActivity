@@ -129,7 +129,7 @@ namespace Quiz
 
                     if (!added)
                     {
-                        Console.WriteLine("\n-- Cart is full --");
+                        Console.WriteLine("\n-- Cart is full (You can still add quantity to existing items) --");
                     }
                 }
 
@@ -163,11 +163,12 @@ namespace Quiz
 
             } while (choice != "N");
 
-            Console.WriteLine("\n** RECEIPT **");
+            Console.WriteLine("\n****************** RECEIPT ******************");
 
             double grandTotal = 0;
             double itemTotal;
 
+            Console.WriteLine("PRODUCT NAME    PRICE      QUANTITY     ITEM TOTAL");
             for (int i = 0; i < cartProductIds.Length; i++)
             {
                 if (cartProductIds[i] == 0)
@@ -182,7 +183,7 @@ namespace Quiz
                     {
                         itemTotal = products[j].GetItemTotal(cartQuantities[i]);
 
-                        Console.WriteLine($"{products[j].name} : {products[j].price} x {cartQuantities[i]} = {itemTotal:N2}");
+                        Console.WriteLine($"{products[j].name, -8}    :   {products[j].price, -8:N2}x     {cartQuantities[i], -5}  =    {itemTotal:N2}");
 
                         grandTotal += itemTotal;
                         break;
@@ -207,11 +208,11 @@ namespace Quiz
 
             Console.WriteLine($"\nFinal Total = Php.{finalTotal:N2}");
 
-            Console.WriteLine("\n** UPDATED STOCK **");
-
+            Console.WriteLine("\n****** UPDATED STOCK ******");
+            Console.WriteLine("PRODUCT NAME     REMAINING STOCK");
             for (int i = 0; i < products.Length; i++)
             {
-                Console.WriteLine($"{products[i].name} - {products[i].remainingStock}");
+                Console.WriteLine($"   {products[i].name, -10}         {products[i].remainingStock}");
             }
 
         }
