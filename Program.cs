@@ -9,18 +9,18 @@ namespace Quiz
 
             Product[] products = new Product[]
             {
-                new Product {id = 101, name = "Eggs", price = 230, remainingStock = 200},
-                new Product {id = 102, name = "Bread", price = 75, remainingStock = 100},
-                new Product {id = 103, name = "Milk", price = 150, remainingStock = 100},
-                new Product {id = 104, name = "Chicken", price = 250, remainingStock = 200},
-                new Product {id = 105, name = "Pork", price = 330, remainingStock = 200},
-                new Product {id = 106, name = "Beef", price = 450, remainingStock = 200},
-                new Product {id = 107, name = "Sardines", price = 40, remainingStock = 250},
-                new Product {id = 108, name = "Carrots", price = 80, remainingStock = 100},
-                new Product {id = 109, name = "Garlic", price = 100, remainingStock = 100},
-                new Product {id = 110, name = "Onions", price = 80, remainingStock = 100},
-                new Product {id = 111, name = "Potato", price = 85, remainingStock = 100},
-                new Product {id = 112, name = "Tomato", price = 70, remainingStock = 100}
+                new Product {id = 101, name = "Eggs", price = 230, remainingStock = 200, category = "Protein/Meat"},
+                new Product {id = 102, name = "Bread", price = 75, remainingStock = 100, category = "Grains"},
+                new Product {id = 103, name = "Milk", price = 150, remainingStock = 100, category = "Dairy"},
+                new Product {id = 104, name = "Chicken", price = 250, remainingStock = 200, category = "Protein/Meat"},
+                new Product {id = 105, name = "Pork", price = 330, remainingStock = 200, category = "Protein/Meat"},
+                new Product {id = 106, name = "Beef", price = 450, remainingStock = 200, category = "Protein/Meat"},
+                new Product {id = 107, name = "Sardines", price = 40, remainingStock = 250, category = "Fish/Meat"},
+                new Product {id = 108, name = "Carrots", price = 80, remainingStock = 100, category = "Vegetables"},
+                new Product {id = 109, name = "Garlic", price = 100, remainingStock = 100, category = "Vegetables"},
+                new Product {id = 110, name = "Onions", price = 80, remainingStock = 100, category = "Vegetables"},
+                new Product {id = 111, name = "Potato", price = 85, remainingStock = 100, category = "Vegetables"},
+                new Product {id = 112, name = "Tomato", price = 70, remainingStock = 100, category = "Vegetables"}
             };
 
             Console.WriteLine("PRODUCT ID     PRODUCT NAME     PRICE (Php)     REMAINING STOCK");
@@ -219,6 +219,23 @@ namespace Quiz
                                     }
                                     break;
                                 case 2:
+                                    bool hasItemCase2 = false;
+
+                                    for (int i = 0; i < cartProductIds.Length; i++)
+                                    {
+                                        if (cartProductIds[i] != 0)
+                                        {
+                                            hasItemCase2 = true;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    if (!hasItemCase2)
+                                    {
+                                        Console.WriteLine("\n-- Cart is empty --");
+                                        break;
+                                    }
+                                    
                                     int idRemove;
 
                                     Console.Write("Enter ID number of item you want to remove: ");
@@ -273,6 +290,23 @@ namespace Quiz
                                     }
                                     break;
                                 case 3:
+                                    bool hasItemCase3 = false;
+
+                                    for (int i = 0; i < cartProductIds.Length; i++)
+                                    {
+                                        if (cartProductIds[i] != 0)
+                                        {
+                                            hasItemCase3 = true;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    if (!hasItemCase3)
+                                    {
+                                        Console.WriteLine("\n-- Cart is empty --");
+                                        break;
+                                    }
+                                    
                                     int idSubQty;
                                     int quantitySub;
                                     
@@ -349,6 +383,23 @@ namespace Quiz
                                     }
                                     break;
                                 case 4:
+                                    bool hasItemCase4 = false;
+
+                                    for (int i = 0; i < cartProductIds.Length; i++)
+                                    {
+                                        if (cartProductIds[i] != 0)
+                                        {
+                                            hasItemCase4 = true;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    if (!hasItemCase4)
+                                    {
+                                        Console.WriteLine("\n-- Cart is empty --");
+                                        break;
+                                    }
+                                    
                                     string sureInput;
 
                                     Console.WriteLine("\nAre you sure? This will clear all your items in cart.");
@@ -394,56 +445,135 @@ namespace Quiz
                             }
                         } while (cartChoice != 5);
                         break;
+                    case 3:
+                        string searchName;
+
+                        Console.Write("\nEnter product name: ");
+                        searchName = Console.ReadLine().Trim();
+                        while (string.IsNullOrEmpty(searchName))
+                        {
+                            Console.WriteLine("\n-- Product name cannot be empty --");
+                            Console.Write("Enter product name: ");
+                            searchName = Console.ReadLine().Trim();
+                        }
+                        
+                        bool nameExists = false;
+                        int itemIndex = 0;
+                        for (int i = 0; i < products.Length; i++)
+                        {
+                            if (products[i].name.ToLower() == searchName.ToLower())
+                            {
+                                nameExists = true;
+                                itemIndex = i;
+                                break;
+                            }
+                        }
+                        
+                        if (!nameExists)
+                        {
+                            Console.WriteLine("\n-- Product name does not exist. Please check if spelling is correct --");
+                            break;
+                        }
+                        
+                        Console.WriteLine("\nPRODUCT ID     PRODUCT NAME     PRICE (Php)     REMAINING STOCK    CATEGORY");
+                        products[itemIndex].DisplayProduct();
+                        break;
+                    case 4:
+                        string searchCategory;
+
+                        Console.Write("\nEnter item category: ");
+                        searchCategory = Console.ReadLine().Trim();
+                        while (string.IsNullOrEmpty(searchCategory))
+                        {
+                            Console.WriteLine("\n-- Product name cannot be empty --");
+                            Console.Write("Enter item category: ");
+                            searchCategory = Console.ReadLine().Trim();
+                        }
+                        
+                        bool categoryExists = false;
+                        
+                        Console.WriteLine("\nPRODUCT ID     PRODUCT NAME     PRICE (Php)     REMAINING STOCK    CATEGORY");
+                        for (int i = 0; i < products.Length; i++)
+                        {
+                            if (products[i].category.ToLower().Contains(searchCategory.ToLower()))
+                            {
+                                products[i].DisplayProduct();
+                                categoryExists = true;
+                            }
+                        }
+                        
+                        if (!categoryExists)
+                        {
+                            Console.WriteLine("\n-- No products found under that category --");
+                        }
+                        break;
+                    case 5:
+                        break;
+                    default:
+                        Console.WriteLine("\n-- Invalid input --");
+                        break;
                 }
             } while (menuChoice != 5);
-            
-            
-
-            Console.WriteLine("\n****************** RECEIPT ******************");
 
             double grandTotal = 0;
             double itemTotal;
-
-            Console.WriteLine("PRODUCT NAME    PRICE      QUANTITY     ITEM TOTAL");
+            
             for (int i = 0; i < cartProductIds.Length; i++)
             {
                 if (cartProductIds[i] == 0)
                 {
-                    break;
+                    continue;
                 }
-                
+            
                 for (int j = 0; j < products.Length; j++)
                 {
-                    
+            
                     if (products[j].id == cartProductIds[i])
                     {
                         itemTotal = products[j].GetItemTotal(cartQuantities[i]);
-
-                        Console.WriteLine($"{products[j].name, -8}    :   {products[j].price, -8:N2}x     {cartQuantities[i], -5}  =    {itemTotal:N2}");
-
                         grandTotal += itemTotal;
                         break;
                     }
                 }
             }
-
-            Console.WriteLine($"\nGrand Total = Php.{grandTotal:N2}");
-
+            
             double discount = 0;
             double discounted = 0;
             double finalTotal;
-
+            
             if (grandTotal >= 5000)
             {
                 discount = 10;
                 discounted = grandTotal * (discount / 100);
             }
-
-            Console.WriteLine($"\nDiscount ({discount}%) = Php.{discounted:N2}");
+            
             finalTotal = grandTotal - discounted;
-
-            Console.WriteLine($"\nFinal Total = Php.{finalTotal:N2}");
-
+            
+            Console.WriteLine($"\nFinal Total: Php.{finalTotal:N2}");
+            
+            double payment;
+            double change;
+            
+            while (true)
+            {
+                Console.Write("\nEnter payment amount: ");
+                while (!double.TryParse(Console.ReadLine(), out payment))
+                {
+                    Console.WriteLine("\n-- Payment must be numeric --");
+                    Console.Write("Enter payment amount: ");
+                }
+            
+                if (payment < finalTotal)
+                {
+                    Console.WriteLine("\n-- Insufficient payment --");
+                    continue;
+                }
+            
+                change = payment - finalTotal;
+                Console.WriteLine($"Change: Php.{change:N2}");
+                break;
+            }
+            
             Console.WriteLine("\n****** UPDATED STOCK ******");
             Console.WriteLine("PRODUCT NAME     REMAINING STOCK");
             for (int i = 0; i < products.Length; i++)
@@ -460,10 +590,11 @@ namespace Quiz
         public string name;
         public double price;
         public int remainingStock;
+        public string category;
 
         public void DisplayProduct()
         {
-            Console.WriteLine($"{id, 5}   :        {name, -10}       {price, -15:N2}    {remainingStock}");
+            Console.WriteLine($"{id, 5}   :        {name, -10}       {price, -15:N2}    {remainingStock, -10}   {category}");
         }
 
         public double GetItemTotal(int quantity)
