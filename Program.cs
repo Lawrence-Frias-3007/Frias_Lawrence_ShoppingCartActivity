@@ -450,7 +450,7 @@ namespace Quiz
                                     case 5:
                                         break;
                                     default:
-                                        Console.WriteLine("\n-- Invalid input --");
+                                        Console.WriteLine("\n-- Invalid input (accepts only 1-5) --");
                                         break;
                                 }
                             } while (cartChoice != 5);
@@ -500,10 +500,10 @@ namespace Quiz
                             {
                                 if (string.IsNullOrEmpty(searchCategory))
                                 {
-                                    Console.WriteLine("\n-- Product name cannot be empty --");
+                                    Console.WriteLine("\n-- Product category cannot be empty --");
                                 } else
                                 {
-                                    Console.WriteLine("\n-- Product name cannot be a number --");
+                                    Console.WriteLine("\n-- Product category cannot be a number --");
                                 }
                                 Console.Write("\nEnter item category: ");
                                 searchCategory = Console.ReadLine().Trim();
@@ -529,7 +529,7 @@ namespace Quiz
                         case 5:
                             break;
                         default:
-                            Console.WriteLine("\n-- Invalid input --");
+                            Console.WriteLine("\n-- Invalid input (accepts only 1-5) --");
                             break;
                     }
                 } while (menuChoice != 5);
@@ -549,7 +549,8 @@ namespace Quiz
                 {
                     Console.WriteLine("\nNo item to checkout.");
                 }
-                
+
+                bool orderHistoryIsFull = false;
                 if (hasItemCheckout)
                 {
                     double grandTotal = 0;
@@ -649,21 +650,43 @@ namespace Quiz
                     }
                     else
                     {
-                        Console.WriteLine("Order history is full.");
+                        orderHistoryIsFull = true;
                     }
                 }
-    
-                Console.WriteLine("\n******** ORDER HISTORY ********");
-                bool haveHistory = false;
-                for (int i = 0; i < historyIndex; i++)
+
+                string viewHistory;
+
+                Console.Write("\nView order history? (Y/N): ");
+                viewHistory = Console.ReadLine().ToUpper().Trim();
+                while (viewHistory != "Y" && viewHistory != "N")
                 {
-                    haveHistory = true;
-                    Console.WriteLine($"Receipt #{i + 1:D4} - Final Total: Php.{orderHistory[i]:N2}");
+                    Console.Write("Type only 'Y' (yes) or 'N' (no): ");
+                    viewHistory = Console.ReadLine().ToUpper().Trim();
                 }
-                
-                if (!haveHistory)
+    
+                if (viewHistory == "Y")
                 {
-                    Console.WriteLine("-- No order history --");
+                    Console.WriteLine("\n******** ORDER HISTORY ********");
+                    bool haveHistory = false;
+                    for (int i = 0; i < historyIndex; i++)
+                    {
+                        haveHistory = true;
+                        Console.WriteLine($"Receipt #{i + 1:D4} - Final Total: Php.{orderHistory[i]:N2}");
+                    }
+                    
+                    if (!haveHistory)
+                    {
+                        Console.WriteLine("-- No order history --");
+                    }
+
+                    if (orderHistoryIsFull)
+                    {
+                        Console.WriteLine("\n-- Sorry, order history was full. -- ");
+                    }
+
+                    Console.Write("\nPress any key to continue...");
+                    Console.ReadKey();
+                    Console.WriteLine();
                 }
                 
                 if (hasItemCheckout)
@@ -683,7 +706,7 @@ namespace Quiz
                         {
                             if (products[i].remainingStock == 0)
                             {
-                                Console.WriteLine($"{products[i].name} has no stock left.");
+                                Console.WriteLine($"{products[i].name} is out of stock.");
                             } else
                             {
                                 Console.WriteLine($"{products[i].name} has only {products[i].remainingStock} stock/s left.");
